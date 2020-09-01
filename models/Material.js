@@ -7,6 +7,12 @@ const MaterialSchema = new mongoose.Schema({
   number: {
     type: String
   },
+  concept: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Concept'
+    }
+  ],
   createdAt:{
     type: Date,
     default: Date.now()
