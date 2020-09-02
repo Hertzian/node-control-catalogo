@@ -2,10 +2,12 @@ const mongoose = require('mongoose')
 
 const CatalogSchema = new mongoose.Schema({
   name: {
-    type: String
+    type: String,
+    required: [true, 'Es necesario un nombre']
   },
   contest: {
-    type: String
+    type: String,
+    required: [true, 'Necesita un numero de catalogo/concurso']
   },
   concept: [
     {

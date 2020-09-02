@@ -3,6 +3,7 @@ const express = require('express')
 const dotenv = require('dotenv')
 dotenv.config({path: './config/config.env'})
 const connectDB = require('./config/db')
+const errorHandler = require('./middleware/errorHandler')
 
 // connect DB
 connectDB()
@@ -22,6 +23,9 @@ const materials = require('./routes/materials')
 app.use('/api/v1/catalogs', catalogs)
 app.use('/api/v1/concepts', concepts)
 app.use('/api/v1/materials', materials)
+
+// error handler
+app.use(errorHandler)
 
 const PORT = process.env.PORT
 
