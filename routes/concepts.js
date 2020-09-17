@@ -7,7 +7,8 @@ router.get('/', ConceptsController.getConcepts)
 router.get('/:conceptId', ConceptsController.getConceptById)
 router.post('/', ConceptsController.newConcept)
 router.delete('/:conceptId', ConceptsController.deleteConcept)
-router.post('/:conceptId/material/:materialId', ConceptsController.addMaterial)
+router.post('/:conceptId/materials', ConceptsController.addMaterial)
+router.delete('/:conceptId/materials/:materialId', ConceptsController.deleteMaterial)
 
 
 module.exports = router

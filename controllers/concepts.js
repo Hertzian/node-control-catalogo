@@ -6,7 +6,7 @@ const Concept = require('../models/Concept')
 // @route   GET /api/v1/concepts/
 // @access  private
 exports.getConcepts = asyncHandler(async (req, res, next) => {
-  const concepts = await Concept.find()
+  const concepts = await Concept.find().populate('material')
 
   res.status(200).json({
     success: true,
@@ -65,14 +65,32 @@ exports.deleteConcept = asyncHandler(async (req, res, next) => {
 })
 
 // @desc    add material to concept
-// @route   POST /api/v1/concepts/:conceptId/material/:materialId
+// @route   POST /api/v1/concepts/:conceptId/materials
 // @access  private
 exports.addMaterial = asyncHandler(async (req, res, next) => {
   const conceptId = req.params.conceptId
-  const materialId = req.params.materialId
+  const materialId = req.body.material
 
-  let concept = await Concept.findOne(conceptId)
+  let concept = await Concept.findOne({_id: conceptId})
   concept.material.push(materialId)
+  await concept.save()
+
+  res.status(201).json({
+    success: true,
+    data: concept
+  })
+})
+
+// @desc    delete material from concept
+// @route   DELETE /api/v1/concepts/:conceptId/materials/:materialId
+// @access  private
+exports.deleteMaterial = asyncHandler(async (req, res, next) => {
+  const conceptId = req.params.conceptId
+  const materialId = req.params.materialId
+  console.log(conceptId, materialId)
+
+  let concept = await Concept.findOne({_id: conceptId})
+  concept.material.pull(materialId)
   await concept.save()
 
   res.status(201).json({
