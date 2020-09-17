@@ -4,9 +4,12 @@ const MaterialSchema = new mongoose.Schema({
   name: {
     type: String
   },
-  number: {
+  unit: {
     type: String
   },
+  // number: {
+  //   type: String
+  // },
   createdAt:{
     type: Date,
     default: Date.now()
