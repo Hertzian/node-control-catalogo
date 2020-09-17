@@ -20,7 +20,7 @@ exports.getCatalogs = asyncHandler(async (req, res, next) => {
 // @access  private
 exports.getCatalog = asyncHandler(async (req, res, next) => {
   const catalogId = req.params.catalogId
-  const catalog = await Catalog.findOne({_id: catalogId})
+  const catalog = await Catalog.findOne({_id: catalogId}).populate('concept')
   
   res.status(200).json({
     success: true,
@@ -45,17 +45,16 @@ exports.newCatalog = asyncHandler(async (req, res, next) => {
 // @access  private
 exports.addConcept = asyncHandler(async (req, res, next) => {
   const catalogId = req.params.catalogId
+  const concept = req.body.concept
 
-  let conceptAdded = await Catalog
-    .findOneAndUpdate(
-      {_id: catalogId},
-      {$push: {concept: req.body.concept}},
-      {new: true}
-    )
+  let catalog = await Catalog.findOne({_id: catalogId})
+  catalog.concept.push(concept)
+
+  await catalog.save()
 
   res.status(201).json({
     success: true,
-    data: conceptAdded
+    data: catalog
   })
 })
 
