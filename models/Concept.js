@@ -13,7 +13,7 @@ const ConceptSchema = new mongoose.Schema({
       ref: 'Material'
     }
   ],
-  createdAt:{
+  createdAt: {
     type: Date,
     default: Date.now()
   }
