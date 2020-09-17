@@ -7,12 +7,6 @@ const ConceptSchema = new mongoose.Schema({
   number: {
     type: String
   },
-  catalog: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Catalog'
-    }
-  ],
   material: [
     {
       type: mongoose.Schema.Types.ObjectId,
