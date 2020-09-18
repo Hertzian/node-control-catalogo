@@ -7,5 +7,6 @@ router.get('/:catalogId', VolumesController.getVolumes)
 router.get('/:catalogId/:volumeId', VolumesController.getVolumeById)
 router.get('/:catalogId/concept/:conceptId', VolumesController.getVolumeByConceptId)
 router.post('/:catalogId/concept/:conceptId/material/:materialId', VolumesController.addVolumeToCatalogConceptMaterial)
+router.delete('/:catalogId/conceptId/:materialId', VolumesController.deleteVolumeFromCatalogConceptMaterial)
 
 module.exports = router

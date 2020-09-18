@@ -74,7 +74,7 @@ exports.addVolumeToCatalogConceptMaterial = asyncHandler(async(req, res, next) =
 // @desc    delete volume 
 // @route   DELETE /api/v1/volumes/:catalogId/conceptId/:materialId
 // @access  private
-exports.addVolumeToCatalogConceptMaterial = asyncHandler(async(req, res, next) => {
+exports.deleteVolumeFromCatalogConceptMaterial = asyncHandler(async(req, res, next) => {
   const catalogId = req.params.catalogId
   const conceptId = req.params.conceptId
   const materialId = req.params.materialId
