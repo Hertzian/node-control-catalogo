@@ -39,14 +39,18 @@ exports.getVolumeByConceptId = asyncHandler(async(req, res, next) => {
   const catalogId = req.params.catalogId
   const conceptId = req.params.conceptId
 
+  const concept = await Concept.findOne({_id: conceptId}, '_id name number')
+
   const volume = await Volume
-    .findOne({catalog: catalogId, concept: conceptId})
-    .populate({path: 'concept', select: 'name number'})
+    .find({catalog: catalogId, concept: conceptId}, '_id volume unit')
     .populate({path: 'material', select: 'name unit'})
 
   res.status(200).json({
     success: false,
-    data: volume
+    data: {
+      concept: concept,
+      volumes: volume
+    }
   })
 })
 
@@ -72,7 +76,7 @@ exports.addVolumeToCatalogConceptMaterial = asyncHandler(async(req, res, next) =
   })
 })
 
-// @desc    add volume 
+// @desc    update volume 
 // @route   PUT /api/v1/volumes/:volumeId
 // @access  private
 exports.updateVolumeToCatalogConceptMaterial = asyncHandler(async(req, res, next) => {
