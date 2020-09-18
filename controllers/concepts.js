@@ -1,12 +1,13 @@
 const ErrorResponse = require('../util/errorResponse')
 const asyncHandler = require('../middleware/asyncHandler')
+const Catalog = require('../models/Catalog')
 const Concept = require('../models/Concept')
 
 // @desc    get all concepts
 // @route   GET /api/v1/concepts/
 // @access  private
 exports.getConcepts = asyncHandler(async (req, res, next) => {
-  const concepts = await Concept.find().populate('material')
+  const concepts = await Concept.find()
 
   res.status(200).json({
     success: true,
@@ -19,7 +20,9 @@ exports.getConcepts = asyncHandler(async (req, res, next) => {
 // @access  private
 exports.getConceptById = asyncHandler(async (req, res, next) => {
   const conceptId = req.params.conceptId
-  const concept = await Concept.findOne({_id: conceptId})
+  const concept = await Concept
+    .findOne({_id: conceptId})
+    .populate('material', '_id name unit')
 
   res.status(200).json({
     success: true,
@@ -27,15 +30,25 @@ exports.getConceptById = asyncHandler(async (req, res, next) => {
   })
 })
 
-// @desc    new concept
-// @route   POST /api/v1/concepts/
+// @desc    get concept by catalog id
+// @route   GET /api/v1/concepts/catalog/:catalogId
 // @access  private
-exports.newConcept = asyncHandler(async (req, res, next) => {
-  let concept = await Concept.create(req.body)
+exports.getConceptsByCatalogId = asyncHandler(async (req, res, next) => {
+  const catalogId = req.params.catalogId
 
-  res.status(201).json({
+  const catalog = await Catalog
+    .findById(catalogId, '_id name contest')
+  
+  const concepts = await Catalog
+    .findOne({_id: catalogId})
+    .populate({path: 'concept', select: 'name'})
+
+  res.status(200).json({
     success: true,
-    data: concept
+    data: {
+      catalog,
+      concepts
+    }
   })
 })
 
@@ -48,19 +61,6 @@ exports.newConcept = asyncHandler(async (req, res, next) => {
   res.status(201).json({
     success: true,
     data: concept
-  })
-})
-
-// @desc    delete concept
-// @route   DELETE /api/v1/concepts/:conceptId
-// @access  private
-exports.deleteConcept = asyncHandler(async (req, res, next) => {
-  const conceptId = req.params.conceptId
-  let conceptDelete = await Concept.findOneAndDelete(conceptId)
-
-  res.status(201).json({
-    success: true,
-    data: conceptDelete
   })
 })
 
@@ -78,6 +78,19 @@ exports.addMaterial = asyncHandler(async (req, res, next) => {
   res.status(201).json({
     success: true,
     data: concept
+  })
+})
+
+// @desc    delete concept
+// @route   DELETE /api/v1/concepts/:conceptId
+// @access  private
+exports.deleteConcept = asyncHandler(async (req, res, next) => {
+  const conceptId = req.params.conceptId
+  let conceptDelete = await Concept.findOneAndDelete(conceptId)
+
+  res.status(201).json({
+    success: true,
+    data: conceptDelete
   })
 })
 
