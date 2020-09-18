@@ -16,6 +16,9 @@ const VolumeSchema = new mongoose.Schema({
   volume: {
     type: Number
   },
+  unit: {
+    type: String
+  },
   createdAt: {
     type: Date,
     default: Date.now()
