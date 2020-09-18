@@ -33,35 +33,29 @@ exports.getVolumeById = asyncHandler(async(req, res, next) => {
 })
 
 // @desc    get volume by concept id 
-// @route   GET /api/v1/volumes/:catalogId/:conceptId
+// @route   GET /api/v1/volumes/:catalogId/concept/:conceptId
 // @access  private
 exports.getVolumeByConceptId = asyncHandler(async(req, res, next) => {
   const catalogId = req.params.catalogId
   const conceptId = req.params.conceptId
-  
-  console.log(catalogId, conceptId)
 
-  const volume = await Volume.findOne(
-    {catalog: catalogId, concept: conceptId},
-    'catalog concept material volume unit'
-  )
+  const volume = await Volume
+    .findOne({catalog: catalogId, concept: conceptId})
+    .populate('concept material')
 
   res.status(200).json({
-    success: true,
+    success: false,
     data: volume
   })
 })
 
 // @desc    add volume 
-// @route   POST /api/v1/volumes/:catalogId/conceptId/:materialId
+// @route   POST /api/v1/volumes/:catalogId/concept/conceptId/material/:materialId
 // @access  private
 exports.addVolumeToCatalogConceptMaterial = asyncHandler(async(req, res, next) => {
   const catalogId = req.params.catalogId
   const conceptId = req.params.conceptId
   const materialId = req.params.materialId
-
-  // const volume = req.body
-  // console.log(req.body)
 
   let volume = await Volume.create({
     catalog: catalogId,
@@ -71,7 +65,29 @@ exports.addVolumeToCatalogConceptMaterial = asyncHandler(async(req, res, next) =
     unit: req.body.unit
   })
 
-  res.status(200).json({
+  res.status(201).json({
+    success: true,
+    data: volume
+  })
+})
+
+// @desc    delete volume 
+// @route   DELETE /api/v1/volumes/:catalogId/conceptId/:materialId
+// @access  private
+exports.addVolumeToCatalogConceptMaterial = asyncHandler(async(req, res, next) => {
+  const catalogId = req.params.catalogId
+  const conceptId = req.params.conceptId
+  const materialId = req.params.materialId
+
+  let volume = await Volume.findOneAndDelete({
+    catalog: catalogId,
+    concept: conceptId,
+    material: materialId,
+    volume: req.body.volume,
+    unit: req.body.unit
+  })
+
+  res.status(201).json({
     success: true,
     data: volume
   })
