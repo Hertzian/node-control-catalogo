@@ -20,7 +20,7 @@ exports.getCatalogs = asyncHandler(async (req, res, next) => {
 // @access  private
 exports.getCatalog = asyncHandler(async (req, res, next) => {
   const catalogId = req.params.catalogId
-  const catalog = await Catalog.findOne({_id: catalogId}).populate('concept')
+  const catalog = await Catalog.findOne({_id: catalogId})
   
   res.status(200).json({
     success: true,
@@ -49,8 +49,7 @@ exports.addConcept = asyncHandler(async (req, res, next) => {
 
   let catalog = await Catalog.findOne({_id: catalogId})
   catalog.concept.push(concept)
-
-  await catalog.save()
+  catalog.save()
 
   res.status(201).json({
     success: true,
@@ -67,13 +66,24 @@ exports.removeConcept = asyncHandler(async (req, res, next) => {
 
   let catalog = await Catalog.findOne({_id: catalogId})
   catalog.concept.pull(conceptId)
-
   catalog.save()
 
   res.status(201).json({
     success: true,
-    data: {
-      catalog,
-    }
+    data: catalog
+  })
+})
+
+// @desc    remove entire catalog
+// @route   DELETE /api/v1/catalogs/:catalogId
+// @access  private
+exports.removeCatalog = asyncHandler(async (req, res, next) => {
+  const catalogId = req.params.catalogId
+
+  let catalog = await Catalog.findOneAndDelete({_id: catalogId})
+
+  res.status(201).json({
+    success: true,
+    data: catalog
   })
 })
