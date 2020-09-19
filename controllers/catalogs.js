@@ -22,8 +22,10 @@ exports.getCatalogs = asyncHandler(async (req, res, next) => {
 exports.getCatalog = asyncHandler(async (req, res, next) => {
   const catalogId = req.params.catalogId
   const catalog = await Catalog.findOne({_id: catalogId}, '_id name contest createdAt')
-  const volumes = await Volume.find({_id: catalogId})
-  
+  const volumes = await Volume
+    .find({catalog: catalogId}, '_id volume unit concept')
+    .populate('concept', '_id name')
+
   res.status(200).json({
     success: true,
     data: {
