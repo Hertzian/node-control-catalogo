@@ -7,7 +7,7 @@ const Concept = require('../models/Concept')
 // @route   GET /api/v1/concepts/
 // @access  private
 exports.getConcepts = asyncHandler(async (req, res, next) => {
-  const concepts = await Concept.find()
+  const concepts = await Concept.find({}, '_id name number createdAt')
 
   res.status(200).json({
     success: true,
@@ -21,7 +21,7 @@ exports.getConcepts = asyncHandler(async (req, res, next) => {
 exports.getConceptById = asyncHandler(async (req, res, next) => {
   const conceptId = req.params.conceptId
   const concept = await Concept
-    .findOne({_id: conceptId})
+    .findById(conceptId, '_id name number')
     .populate('material', '_id name unit')
 
   res.status(200).json({
