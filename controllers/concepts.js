@@ -30,6 +30,7 @@ exports.getConceptById = asyncHandler(async (req, res, next) => {
   })
 })
 
+// **********************************************************************************************
 // @desc    get concept by catalog id
 // @route   GET /api/v1/concepts/catalog/:catalogId
 // @access  private
@@ -41,7 +42,7 @@ exports.getConceptsByCatalogId = asyncHandler(async (req, res, next) => {
   
   const concepts = await Catalog
     .findOne({_id: catalogId})
-    .populate({path: 'concept', select: 'name'})
+    .populate({path: 'concept', select: 'name number'})
 
   res.status(200).json({
     success: true,
