@@ -1,13 +1,14 @@
 const ErrorResponse = require('../util/errorResponse')
 const asyncHandler = require('../middleware/asyncHandler')
 const Catalog = require('../models/Catalog')
+const Volume = require('../models/Volume')
 
 
 // @desc    get all catalogs
 // @route   GET /api/v1/catalogs/
 // @access  private
 exports.getCatalogs = asyncHandler(async (req, res, next) => {
-  const catalogs = await Catalog.find()
+  const catalogs = await Catalog.find({}, '_id name contest createdAt')
 
   res.status(200).json({
     success: true,
@@ -20,11 +21,15 @@ exports.getCatalogs = asyncHandler(async (req, res, next) => {
 // @access  private
 exports.getCatalog = asyncHandler(async (req, res, next) => {
   const catalogId = req.params.catalogId
-  const catalog = await Catalog.findOne({_id: catalogId})
+  const catalog = await Catalog.findOne({_id: catalogId}, '_id name contest createdAt')
+  const volumes = await Volume.find({_id: catalogId})
   
   res.status(200).json({
     success: true,
-    data: catalog
+    data: {
+      catalog,
+      volumes
+  }
   })
 })
 
