@@ -1,6 +1,6 @@
 const ErrorResponse = require('../util/errorResponse')
 const asyncHandler = require('../middleware/asyncHandler')
-const Volume = require('../models/Volume')
+const ConceptVolume = require('../models/ConceptVolume')
 const Concept = require('../models/Concept')
 const Catalog = require('../models/Catalog')
 
@@ -10,11 +10,17 @@ const Catalog = require('../models/Catalog')
 exports.getVolumes = asyncHandler(async(req, res, next) => {
   const catalogId = req.params.catalogId
 
-  const volumes = await Volume.find({catalog: catalogId})
+  const catalog = await Catalog.findById(catalogId, '_id name contest')
+  const volumes = await ConceptVolume
+    .find({catalog: catalogId}, 'concept volume unit')
+    .populate('concept', '_id name number')
 
   res.status(200).json({
     success: true,
-    data: volumes
+    data: {
+      catalog,
+      volumes
+    }
   })
 })
 
@@ -24,7 +30,7 @@ exports.getVolumes = asyncHandler(async(req, res, next) => {
 exports.getVolumeById = asyncHandler(async(req, res, next) => {
   const volumeId = req.params.volumeId
 
-  const volume = await Volume.findOne({_id: volumeId})
+  const volume = await ConceptVolume.findOne({_id: volumeId})
 
   res.status(200).json({
     success: true,
@@ -40,16 +46,19 @@ exports.getVolumeByConceptId = asyncHandler(async(req, res, next) => {
   const conceptId = req.params.conceptId
 
   const concept = await Concept.findOne({_id: conceptId}, '_id name number')
+  // const concept = await Concept.findOne({_id: conceptId}, '_id name number')
+  const volume = await ConceptVolume
+    .findOne({concept: conceptId, catalog: catalogId}, '_id volume unit')
 
-  const volume = await Volume
-    .find({catalog: catalogId, concept: conceptId}, '_id volume unit')
-    .populate({path: 'material', select: 'name unit'})
+  if (!concept || !volume) {
+    return next(new ErrorResponse(`Concept ${conceptId} doesn't exist in catalog ${catalogId}`, 404));
+  }
 
   res.status(200).json({
     success: false,
     data: {
-      concept: concept,
-      volumes: volume
+      concept,
+      volume
     }
   })
 })
@@ -62,7 +71,7 @@ exports.addVolumeToCatalogConceptMaterial = asyncHandler(async(req, res, next) =
   const conceptId = req.params.conceptId
   const materialId = req.params.materialId
 
-  let volume = await Volume.create({
+  let volume = await ConceptVolume.create({
     catalog: catalogId,
     concept: conceptId,
     material: materialId,
@@ -82,11 +91,12 @@ exports.addVolumeToCatalogConceptMaterial = asyncHandler(async(req, res, next) =
 exports.updateVolumeToCatalogConceptMaterial = asyncHandler(async(req, res, next) => {
   const volumeId = req.params.volumeId
 
-  const volume = await Volume.findById(volumeId)
+  const volume = await ConceptVolume.findById(volumeId)
+
   let number = req.body.volume || volume.volume
   let unit = req.body.unit || volume.unit
 
-  let updatedVolume = await Volume.findOneAndUpdate(
+  let updatedVolume = await ConceptVolume.findOneAndUpdate(
     {_id: volumeId},
     {
       volume: number,
@@ -106,7 +116,8 @@ exports.updateVolumeToCatalogConceptMaterial = asyncHandler(async(req, res, next
 // @access  private
 exports.deleteVolumeFromCatalogConceptMaterial = asyncHandler(async(req, res, next) => {
   const volumeId = req.params.volumeId
-  let volume = await Volume.findOneAndDelete({_id: volumeId})
+
+  let volume = await ConceptVolume.findOneAndDelete({_id: volumeId})
 
   res.status(201).json({
     success: true,

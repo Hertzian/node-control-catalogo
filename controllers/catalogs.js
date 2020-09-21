@@ -1,7 +1,7 @@
 const ErrorResponse = require('../util/errorResponse')
 const asyncHandler = require('../middleware/asyncHandler')
 const Catalog = require('../models/Catalog')
-const Volume = require('../models/Volume')
+const ConceptVolume = require('../models/ConceptVolume')
 
 
 // @desc    get all catalogs
@@ -22,7 +22,7 @@ exports.getCatalogs = asyncHandler(async (req, res, next) => {
 exports.getCatalog = asyncHandler(async (req, res, next) => {
   const catalogId = req.params.catalogId
   const catalog = await Catalog.findOne({_id: catalogId}, '_id name contest createdAt')
-  const volumes = await Volume
+  const volumes = await ConceptVolume
     .find({catalog: catalogId}, '_id volume unit concept')
     .populate('concept', '_id name')
 

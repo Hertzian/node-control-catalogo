@@ -9,7 +9,7 @@ dotenv.config({path: './config/config.env'})
 const Catalog = require('./models/Catalog')
 const Concept = require('./models/Concept')
 const Material = require('./models/Material')
-const Volume = require('./models/Volume')
+const ConceptVolume = require('./models/ConceptVolume')
 
 // conect to db
 mongoose.connect(process.env.MONGO_URI, {
@@ -23,7 +23,7 @@ mongoose.connect(process.env.MONGO_URI, {
 const catalogs = JSON.parse(fs.readFileSync(`${__dirname}/_dummyData/catalogs.json`, 'utf-8'))
 const concepts = JSON.parse(fs.readFileSync(`${__dirname}/_dummyData/concepts.json`, 'utf-8'))
 const materials = JSON.parse(fs.readFileSync(`${__dirname}/_dummyData/materials.json`, 'utf-8'))
-const volumes = JSON.parse(fs.readFileSync(`${__dirname}/_dummyData/volumes.json`, 'utf-8'))
+const ConceptVolumes = JSON.parse(fs.readFileSync(`${__dirname}/_dummyData/conceptVolumes.json`, 'utf-8'))
 
 // import to db
 const imporData = async () => {
@@ -31,7 +31,7 @@ const imporData = async () => {
     await Catalog.create(catalogs)
     await Concept.create(concepts)
     await Material.create(materials)
-    await Volume.create(volumes)
+    await ConceptVolume.create(ConceptVolumes)
 
     console.log('Data imported')
     process.exit()
@@ -46,7 +46,7 @@ const deleteData = async () => {
     await Catalog.deleteMany()
     await Concept.deleteMany()
     await Material.deleteMany()
-    await Volume.deleteMany()
+    await ConceptVolume.deleteMany()
 
     console.log('Data destroyed')
     process.exit()

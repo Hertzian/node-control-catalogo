@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
 
-const VolumeSchema = new mongoose.Schema({
+const ConceptVolumeSchema = new mongoose.Schema({
   catalog: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Catalogo'
+    ref: 'Catalog'
   },
   concept: {
     type: mongoose.Schema.Types.ObjectId,
@@ -25,4 +25,4 @@ const VolumeSchema = new mongoose.Schema({
   }
 })
 
-module.exports = mongoose.model('Volume', VolumeSchema)
+module.exports = mongoose.model('Volume', ConceptVolumeSchema)

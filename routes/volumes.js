@@ -1,13 +1,13 @@
 const express = require('express')
-const VolumesController = require('../controllers/volumes')
+const ConceptVolumesController = require('../controllers/conceptVolumes')
 const router = express.Router()
 
 // Routes
-router.get('/catalog/:catalogId', VolumesController.getVolumes)
-router.get('/catalog/:catalogId/:volumeId', VolumesController.getVolumeById)
-router.get('/catalog/:catalogId/concept/:conceptId', VolumesController.getVolumeByConceptId)
-router.post('/catalog/:catalogId/concept/:conceptId/material/:materialId', VolumesController.addVolumeToCatalogConceptMaterial)
-router.put('/:volumeId', VolumesController.updateVolumeToCatalogConceptMaterial)
-router.delete('/:volumeId', VolumesController.deleteVolumeFromCatalogConceptMaterial)
+router.get('/catalog/:catalogId', ConceptVolumesController.getVolumes)
+router.get('/catalog/:catalogId/volume/:volumeId', ConceptVolumesController.getVolumeById)
+router.get('/catalog/:catalogId/concept/:conceptId', ConceptVolumesController.getVolumeByConceptId)
+router.post('/catalog/:catalogId/concept/:conceptId/material/:materialId', ConceptVolumesController.addVolumeToCatalogConceptMaterial)
+router.put('/:volumeId', ConceptVolumesController.updateVolumeToCatalogConceptMaterial)
+router.delete('/:volumeId', ConceptVolumesController.deleteVolumeFromCatalogConceptMaterial)
 
 module.exports = router
