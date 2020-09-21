@@ -9,10 +9,6 @@ const ConceptVolumeSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Concept'
   },
-  material: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Material'
-  },
   volume: {
     type: Number
   },

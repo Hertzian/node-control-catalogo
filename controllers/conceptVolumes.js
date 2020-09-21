@@ -117,7 +117,7 @@ exports.updateVolumeToCatalogConceptMaterial = asyncHandler(async(req, res, next
 exports.deleteVolumeFromCatalogConceptMaterial = asyncHandler(async(req, res, next) => {
   const volumeId = req.params.volumeId
 
-  let volume = await ConceptVolume.findOneAndDelete({_id: volumeId})
+  let volume = await ConceptVolume.findByIdAndDelete({_id: volumeId})
 
   res.status(201).json({
     success: true,

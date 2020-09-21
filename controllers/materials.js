@@ -8,6 +8,10 @@ const Material = require('../models/Material')
 exports.getMaterials = asyncHandler(async (req, res, next) => {
   const materials = await Material.find()
 
+  if(!materials){
+    return next(new ErrorResponse(`There are not materials found`, 404))
+  }
+
   res.status(200).json({
     success: true,
     data: materials
@@ -19,7 +23,7 @@ exports.getMaterials = asyncHandler(async (req, res, next) => {
 // @access  private
 exports.getMaterial = asyncHandler(async (req, res, next) => {
   const materialId = req.params.materialId
-  const material = await Material.findOne({_id: materialId})
+  const material = await Material.findById(materialId)
 
   res.status(200).json({
     success: true,
@@ -44,7 +48,13 @@ exports.addMaterial = asyncHandler(async(req, res, next) => {
 // @access  private
 exports.deleteMaterial = asyncHandler(async(req, res, next) => {
   const materialId = req.params.materialId
-  let material = await Material.findOneAndDelete(materialId)
+  const material = await Material.findById(materialId)
+
+  if(!material){
+    return next(new ErrorResponse(`Material ${materialId} not found`, 404))
+  }
+
+  material.remove()
 
   res.status(201).json({
     success: true,

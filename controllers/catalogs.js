@@ -87,7 +87,7 @@ exports.removeConcept = asyncHandler(async (req, res, next) => {
 exports.removeCatalog = asyncHandler(async (req, res, next) => {
   const catalogId = req.params.catalogId
 
-  let catalog = await Catalog.findOneAndDelete({_id: catalogId})
+  let catalog = await Catalog.findByIdAndDelete(catalogId)
 
   res.status(201).json({
     success: true,

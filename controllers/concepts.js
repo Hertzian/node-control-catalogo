@@ -80,7 +80,7 @@ exports.addMaterial = asyncHandler(async (req, res, next) => {
 // @access  private
 exports.deleteConcept = asyncHandler(async (req, res, next) => {
   const conceptId = req.params.conceptId
-  let conceptDelete = await Concept.findOneAndDelete(conceptId)
+  let conceptDelete = await Concept.findByIdAndDelete(conceptId)
 
   res.status(201).json({
     success: true,
@@ -98,7 +98,7 @@ exports.deleteMaterial = asyncHandler(async (req, res, next) => {
 
   let concept = await Concept.findOne({_id: conceptId})
   concept.material.pull(materialId)
-  await concept.save()
+  concept.save()
 
   res.status(201).json({
     success: true,
