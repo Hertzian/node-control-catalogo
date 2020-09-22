@@ -77,13 +77,20 @@ exports.deleteMaterial = asyncHandler(async(req, res, next) => {
     return next(new ErrorResponse(`Material ${materialId} not found`, 404))
   }
 
-  let concept = await Concept.find({})
-
   material.remove()
+
+  let concept = await Concept.find({material: materialId})
+  concept.forEach(con => {
+    con.material.pull(materialId)
+    con.save()
+  })
 
   res.status(201).json({
     success: true,
-    data: material
+    data: {
+      material,
+      concept
+    }
   })
 })
 
