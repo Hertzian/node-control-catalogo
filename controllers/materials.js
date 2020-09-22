@@ -35,9 +35,35 @@ exports.getMaterial = asyncHandler(async (req, res, next) => {
 // @route   POST /api/v1/materials
 // @access  private
 exports.addMaterial = asyncHandler(async(req, res, next) => {
-  let material = await Material.create(req.body)
+  const material = await Material.create(req.body)
 
   res.status(201).json({
+    success: true,
+    data: material
+  })
+})
+
+// @desc    update material
+// @route   PUT /api/v1/materials/:materialId
+// @access  private
+exports.updateMaterial = asyncHandler(async(req, res, next) => {
+  const materialId = req.params.materialId
+  let material = await Material.findOne({_id: materialId})
+
+  console.log(material, req.body)
+
+  if(!material){
+    return next(new ErrorResponse(`Doesn't exists material with id of ${materialId}`, 404))
+  }
+
+  material = await Material.findByIdAndUpdate(materialId, req.body, {
+    nes: true,
+    runValidators: true
+  })
+
+  console.log(material)
+
+  res.status(200).json({
     success: true,
     data: material
   })

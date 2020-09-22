@@ -6,6 +6,7 @@ const router = express.Router()
 router.get('/', MaterialsController.getMaterials)
 router.get('/:materialId', MaterialsController.getMaterial)
 router.post('/', MaterialsController.addMaterial)
+router.put('/:materialId', MaterialsController.updateMaterial)
 router.delete('/:materialId', MaterialsController.deleteMaterial)
 
 

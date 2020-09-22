@@ -71,6 +71,14 @@ exports.removeConcept = asyncHandler(async (req, res, next) => {
   const catalogId = req.params.catalogId
   const conceptId = req.params.conceptId
 
+  let volume = await ConceptVolume.findOne({concept: conceptId, catalog: catalogId})
+
+  if(!volume){
+    return next(new ErrorResponse(`Can't find concept ${conceptId}`, 404))
+  }
+
+  volume.remove()
+
   let catalog = await Catalog.findOne({_id: catalogId})
   catalog.concept.pull(conceptId)
   catalog.save()
