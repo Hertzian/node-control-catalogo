@@ -4,26 +4,6 @@ const ConceptVolume = require('../models/ConceptVolume')
 const Concept = require('../models/Concept')
 const Catalog = require('../models/Catalog')
 
-// @desc    get all volumes from catalog
-// @route   GET /api/v1/volumes/catalog/:catalogId
-// @access  private
-exports.getVolumes = asyncHandler(async(req, res, next) => {
-  const catalogId = req.params.catalogId
-
-  const catalog = await Catalog.findById(catalogId, '_id name contest')
-  const volumes = await ConceptVolume
-    .find({catalog: catalogId}, 'concept volume unit')
-    .populate('concept', '_id name number')
-
-  res.status(200).json({
-    success: true,
-    data: {
-      catalog,
-      volumes
-    }
-  })
-})
-
 // @desc    get volume by id
 // @route   GET /api/v1/volumes/catalog/:catalogId/:volumeId
 // @access  private

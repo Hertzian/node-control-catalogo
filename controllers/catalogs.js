@@ -21,7 +21,12 @@ exports.getCatalogs = asyncHandler(async (req, res, next) => {
 // @access  private
 exports.getCatalog = asyncHandler(async (req, res, next) => {
   const catalogId = req.params.catalogId
-  const catalog = await Catalog.findOne({_id: catalogId}, '_id name contest createdAt')
+  const catalog = await Catalog.findById(catalogId, '_id name contest createdAt')
+
+  if(!catalog){
+    return next(new ErrorResponse(`Catalog ${catalogId} doesn't exists`, 404))
+  }
+
   const volumes = await ConceptVolume
     .find({catalog: catalogId}, '_id volume unit concept')
     .populate('concept', '_id name')
@@ -119,7 +124,15 @@ exports.removeConcept = asyncHandler(async (req, res, next) => {
 exports.removeCatalog = asyncHandler(async (req, res, next) => {
   const catalogId = req.params.catalogId
 
-  let catalog = await Catalog.findByIdAndDelete(catalogId)
+  let catalog = await Catalog.findById(catalogId)
+
+  if(!catalog){
+    return next(new ErrorResponse(`Catalog ${catalogId} doesn't exists`, 404))
+  }
+  
+  catalog = await Catalog.findByIdAndDelete(catalogId)
+
+  const volumes = await ConceptVolume.deleteMany({catalog: catalogId})
 
   res.status(201).json({
     success: true,

@@ -18,13 +18,13 @@ app.use(express.json())
 const catalogs = require('./routes/catalogs')
 const concepts = require('./routes/concepts')
 const materials = require('./routes/materials')
-const volumes = require('./routes/volumes')
+const conceptVolumes = require('./routes/conceptVolumes')
 
 // route use
 app.use('/api/v1/catalogs', catalogs)
 app.use('/api/v1/concepts', concepts)
 app.use('/api/v1/materials', materials)
-app.use('/api/v1/volumes', volumes)
+app.use('/api/v1/concept-volumes', conceptVolumes)
 
 // error handler
 app.use(errorHandler)
