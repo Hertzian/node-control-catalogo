@@ -19,12 +19,14 @@ const catalogs = require('./routes/catalogs')
 const concepts = require('./routes/concepts')
 const materials = require('./routes/materials')
 const conceptVolumes = require('./routes/conceptVolumes')
+const users = require('./routes/users')
 
 // route use
 app.use('/api/v1/catalogs', catalogs)
 app.use('/api/v1/concepts', concepts)
 app.use('/api/v1/materials', materials)
 app.use('/api/v1/concept-volumes', conceptVolumes)
+app.use('/api/v1/users', users)
 
 // error handler
 app.use(errorHandler)

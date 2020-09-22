@@ -10,6 +10,7 @@ const Catalog = require('./models/Catalog')
 const Concept = require('./models/Concept')
 const Material = require('./models/Material')
 const ConceptVolume = require('./models/ConceptVolume')
+const User = require('./models/User')
 
 // conect to db
 mongoose.connect(process.env.MONGO_URI, {
@@ -23,7 +24,8 @@ mongoose.connect(process.env.MONGO_URI, {
 const catalogs = JSON.parse(fs.readFileSync(`${__dirname}/_dummyData/catalogs.json`, 'utf-8'))
 const concepts = JSON.parse(fs.readFileSync(`${__dirname}/_dummyData/concepts.json`, 'utf-8'))
 const materials = JSON.parse(fs.readFileSync(`${__dirname}/_dummyData/materials.json`, 'utf-8'))
-const ConceptVolumes = JSON.parse(fs.readFileSync(`${__dirname}/_dummyData/conceptVolumes.json`, 'utf-8'))
+const conceptVolumes = JSON.parse(fs.readFileSync(`${__dirname}/_dummyData/conceptVolumes.json`, 'utf-8'))
+const users = JSON.parse(fs.readFileSync(`${__dirname}/_dummyData/users.json`, 'utf-8'))
 
 // import to db
 const imporData = async () => {
@@ -31,7 +33,8 @@ const imporData = async () => {
     await Catalog.create(catalogs)
     await Concept.create(concepts)
     await Material.create(materials)
-    await ConceptVolume.create(ConceptVolumes)
+    await ConceptVolume.create(conceptVolumes)
+    await User.create(users)
 
     console.log('Data imported')
     process.exit()
@@ -47,6 +50,7 @@ const deleteData = async () => {
     await Concept.deleteMany()
     await Material.deleteMany()
     await ConceptVolume.deleteMany()
+    await User.deleteMany()
 
     console.log('Data destroyed')
     process.exit()
