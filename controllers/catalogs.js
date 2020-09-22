@@ -114,7 +114,7 @@ exports.removeConcept = asyncHandler(async (req, res, next) => {
 
   res.status(201).json({
     success: true,
-    data: catalog
+    data: {}
   })
 })
 
@@ -132,10 +132,10 @@ exports.removeCatalog = asyncHandler(async (req, res, next) => {
   
   catalog = await Catalog.findByIdAndDelete(catalogId)
 
-  const volumes = await ConceptVolume.deleteMany({catalog: catalogId})
+  await ConceptVolume.deleteMany({catalog: catalogId})
 
   res.status(201).json({
     success: true,
-    data: catalog
+    data: {}
   })
 })
