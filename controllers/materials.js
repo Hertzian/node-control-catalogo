@@ -57,7 +57,7 @@ exports.updateMaterial = asyncHandler(async(req, res, next) => {
   }
 
   material = await Material.findByIdAndUpdate(materialId, req.body, {
-    nes: true,
+    new: true,
     runValidators: true
   })
 

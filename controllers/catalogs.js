@@ -64,8 +64,32 @@ exports.addConcept = asyncHandler(async (req, res, next) => {
   })
 })
 
+// @desc    update catalog
+// @route   PUT /api/v1/catalogs/:catalogId
+// @access  private
+exports.updateCatalog = asyncHandler(async (req, res, next) => {
+  const catalogId = req.params.catalogId
+
+  let catalog = await Catalog.findById(catalogId)
+
+  if(!catalog){
+    return next(new ErrorResponse(`Catalog ${catalogId} doesn't exists`, 404))
+  }
+
+  catalog = await Catalog.findByIdAndUpdate(catalogId, req.body, {
+    new: true,
+    runValidators: true
+  })
+
+  res.status(201).json({
+    success: true,
+    data: catalog
+  })
+})
+
+
 // @desc    remove concept from catalog
-// @route   DELETE /api/v1/catalogs/:catalogId/remove-concept/:conceptId
+// @route   DELETE /api/v1/catalogs/:catalogId/concept/:conceptId
 // @access  private
 exports.removeConcept = asyncHandler(async (req, res, next) => {
   const catalogId = req.params.catalogId
