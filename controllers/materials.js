@@ -1,6 +1,7 @@
 const ErrorResponse = require('../util/errorResponse')
 const asyncHandler = require('../middleware/asyncHandler')
 const Material = require('../models/Material')
+const Concept = require('../models/Concept')
 
 // @desc    get materials
 // @route   GET /api/v1/materials
@@ -50,8 +51,6 @@ exports.updateMaterial = asyncHandler(async(req, res, next) => {
   const materialId = req.params.materialId
   let material = await Material.findOne({_id: materialId})
 
-  console.log(material, req.body)
-
   if(!material){
     return next(new ErrorResponse(`Doesn't exists material with id of ${materialId}`, 404))
   }
@@ -60,8 +59,6 @@ exports.updateMaterial = asyncHandler(async(req, res, next) => {
     new: true,
     runValidators: true
   })
-
-  console.log(material)
 
   res.status(200).json({
     success: true,
@@ -79,6 +76,8 @@ exports.deleteMaterial = asyncHandler(async(req, res, next) => {
   if(!material){
     return next(new ErrorResponse(`Material ${materialId} not found`, 404))
   }
+
+  let concept = await Concept.find({})
 
   material.remove()
 

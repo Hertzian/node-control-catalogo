@@ -2,6 +2,7 @@ const ErrorResponse = require('../util/errorResponse')
 const asyncHandler = require('../middleware/asyncHandler')
 const Catalog = require('../models/Catalog')
 const Concept = require('../models/Concept')
+const ConceptVolume = require('../models/ConceptVolume')
 
 // @desc    get all concepts
 // @route   GET /api/v1/concepts/
@@ -80,11 +81,31 @@ exports.addMaterial = asyncHandler(async (req, res, next) => {
 // @access  private
 exports.deleteConcept = asyncHandler(async (req, res, next) => {
   const conceptId = req.params.conceptId
-  let conceptDelete = await Concept.findByIdAndDelete(conceptId)
+
+  let concept = await Concept.findById(conceptId)
+
+  if(!concept){
+    return next(new ErrorResponse(`Concept ${conceptId} doesn't exists`, 404))
+  }
+
+  concept.remove()
+
+  const volumes = await ConceptVolume.find({concept: conceptId})
+  volumes.forEach(volume => volume.remove())
+
+  const catalog = await Catalog.find({concept: conceptId})
+  catalog.forEach(cat => {
+    cat.concept.pull(conceptId)
+    cat.save()  
+  })
 
   res.status(201).json({
     success: true,
-    data: conceptDelete
+    data: {
+      concept,
+      volumes,
+      catalog
+    }
   })
 })
 
@@ -94,7 +115,6 @@ exports.deleteConcept = asyncHandler(async (req, res, next) => {
 exports.deleteMaterial = asyncHandler(async (req, res, next) => {
   const conceptId = req.params.conceptId
   const materialId = req.params.materialId
-  console.log(conceptId, materialId)
 
   let concept = await Concept.findOne({_id: conceptId})
   concept.material.pull(materialId)
