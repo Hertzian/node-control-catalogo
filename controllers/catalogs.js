@@ -1,4 +1,4 @@
-const ErrorResponse = require('../util/errorResponse')
+const ErrorResponse = require('../middleware/errorResponse')
 const asyncHandler = require('../middleware/asyncHandler')
 const Catalog = require('../models/Catalog')
 const ConceptVolume = require('../models/ConceptVolume')

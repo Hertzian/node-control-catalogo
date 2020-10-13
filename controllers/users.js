@@ -1,5 +1,5 @@
 const asyncHandler = require('../middleware/asyncHandler')
-const ErrorResponse = require('../util/errorResponse')
+const ErrorResponse = require('../middleware/errorResponse')
 const bcrypt = require('bcryptjs')
 const User = require('../models/User')
 
