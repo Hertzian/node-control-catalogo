@@ -1,12 +1,13 @@
 const asyncHandler = require('../middleware/asyncHandler')
 const ErrorResponse = require('../util/errorResponse')
+const bcrypt = require('bcryptjs')
 const User = require('../models/User')
 
 // @desc    get all users
 // @route   GET /api/v1/users
 // @access  private/admin
 exports.getUsers = asyncHandler(async (req, res, next) => {
-  const users = await User.find({}, '_id name email createdAt')
+  const users = await User.find()
 
   res.status(200).json({
     success: true,
@@ -35,7 +36,8 @@ exports.createUser = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    data: user
+    // data: user
+    data: 'Usuario creado'
   })
 })
 
@@ -43,10 +45,12 @@ exports.createUser = asyncHandler(async (req, res, next) => {
 // @route   PUT /api/v1/auth/users/:userId
 // @access  private/admin
 exports.updateUser = asyncHandler(async (req, res, next) => {
-  const user = await User.findByIdAndUpdate(req.params.userId, req.body, {
+  const user = await User.findByIdAndUpdate(req.params.userId, req.body.name, {
     new: true,
     runValidators: true
   })
+
+  console.log(user)
 
   res.status(200).json({
     success: true,

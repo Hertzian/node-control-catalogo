@@ -26,7 +26,8 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, 'Please add password'],
-    minlength: 8
+    minlength: 8,
+    select: false
   },
   resetPasswordToken: String,
   resetPasswordExpire: Date,
@@ -38,7 +39,9 @@ const UserSchema = new mongoose.Schema({
 
 // encrypt password
 UserSchema.pre('save', async function(next) {
-  if(!this.isModified('password'))next()
+  if(!this.isModified('password')){
+    next()
+  }
 
   // gensalt returns a promise
   const salt = await bcrypt.genSalt(10)
@@ -65,7 +68,7 @@ UserSchema.methods.getResetPasswordToken = function() {
   const resetToken = crypto.randomBytes(20).toString('hex')
 
   // hash token and set to resetPasswordToken field
-  this.resetpassword = crypto
+  this.resetPasswordToken = crypto
     .createHash('sha256')
     .update(resetToken)
     .digest('hex')
