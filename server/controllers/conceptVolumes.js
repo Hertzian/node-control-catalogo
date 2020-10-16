@@ -45,7 +45,7 @@ exports.getVolumeByConceptId = asyncHandler(async(req, res, next) => {
 
 // @desc    add volume 
 // @route   POST /api/v1/volumes/catalog/:catalogId/concept/:conceptId/material/:materialId
-// @access  private
+// @access  admin/private
 exports.addVolumeToCatalogConceptMaterial = asyncHandler(async(req, res, next) => {
   const catalogId = req.params.catalogId
   const conceptId = req.params.conceptId
@@ -67,7 +67,7 @@ exports.addVolumeToCatalogConceptMaterial = asyncHandler(async(req, res, next) =
 
 // @desc    update volume 
 // @route   PUT /api/v1/volumes/:volumeId
-// @access  private
+// @access  admin/private
 exports.updateVolumeToCatalogConceptMaterial = asyncHandler(async(req, res, next) => {
   const volumeId = req.params.volumeId
 
@@ -93,7 +93,7 @@ exports.updateVolumeToCatalogConceptMaterial = asyncHandler(async(req, res, next
 
 // @desc    delete volume 
 // @route   DELETE /api/v1/volumes/:volumeId
-// @access  private
+// @access  admin/private
 exports.deleteVolumeFromCatalogConceptMaterial = asyncHandler(async(req, res, next) => {
   const volumeId = req.params.volumeId
 

@@ -36,13 +36,13 @@ exports.getCatalog = asyncHandler(async (req, res, next) => {
     data: {
       catalog,
       volumes
-  }
+    }
   })
 })
 
 // @desc    new catalog
 // @route   POST /api/v1/catalogs/
-// @access  private
+// @access  admin/private
 exports.newCatalog = asyncHandler(async (req, res, next) => {
   let catalog = await Catalog.create(req.body)
 
@@ -54,7 +54,7 @@ exports.newCatalog = asyncHandler(async (req, res, next) => {
 
 // @desc    add concept to catalog
 // @route   POST /api/v1/catalogs/:catalogId/add-concept
-// @access  private
+// @access  admin/private
 exports.addConcept = asyncHandler(async (req, res, next) => {
   const catalogId = req.params.catalogId
   const concept = req.body.concept
@@ -71,7 +71,7 @@ exports.addConcept = asyncHandler(async (req, res, next) => {
 
 // @desc    update catalog
 // @route   PUT /api/v1/catalogs/:catalogId
-// @access  private
+// @access  admin/private
 exports.updateCatalog = asyncHandler(async (req, res, next) => {
   const catalogId = req.params.catalogId
 
@@ -95,7 +95,7 @@ exports.updateCatalog = asyncHandler(async (req, res, next) => {
 
 // @desc    remove concept from catalog
 // @route   DELETE /api/v1/catalogs/:catalogId/concept/:conceptId
-// @access  private
+// @access  admin/private
 exports.removeConcept = asyncHandler(async (req, res, next) => {
   const catalogId = req.params.catalogId
   const conceptId = req.params.conceptId
@@ -120,7 +120,7 @@ exports.removeConcept = asyncHandler(async (req, res, next) => {
 
 // @desc    remove entire catalog
 // @route   DELETE /api/v1/catalogs/:catalogId
-// @access  private
+// @access  admin/private
 exports.removeCatalog = asyncHandler(async (req, res, next) => {
   const catalogId = req.params.catalogId
 

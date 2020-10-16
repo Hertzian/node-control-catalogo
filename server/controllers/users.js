@@ -57,7 +57,7 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
 
 // @desc    update password
 // @route   PUT /api/v1/users/:userId/update-password
-// @access  admin
+// @access  private/admin
 exports.updatePassword = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.params.userId).select('+password')
 

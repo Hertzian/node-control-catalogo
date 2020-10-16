@@ -49,7 +49,7 @@ exports.getConceptsByCatalogId = asyncHandler(async (req, res, next) => {
 
 // @desc    new concept
 // @route   POST /api/v1/concepts/
-// @access  private
+// @access  admin/private
 exports.newConcept = asyncHandler(async (req, res, next) => {
   let concept = await Concept.create(req.body)
 
@@ -61,7 +61,7 @@ exports.newConcept = asyncHandler(async (req, res, next) => {
 
 // @desc    add material to concept
 // @route   POST /api/v1/concepts/:conceptId/materials
-// @access  private
+// @access  admin/private
 exports.addMaterial = asyncHandler(async (req, res, next) => {
   const conceptId = req.params.conceptId
   const materialId = req.body.material
@@ -78,7 +78,7 @@ exports.addMaterial = asyncHandler(async (req, res, next) => {
 
 // @desc    delete concept
 // @route   DELETE /api/v1/concepts/:conceptId
-// @access  private
+// @access  admin/private
 exports.deleteConcept = asyncHandler(async (req, res, next) => {
   const conceptId = req.params.conceptId
 
@@ -107,7 +107,7 @@ exports.deleteConcept = asyncHandler(async (req, res, next) => {
 
 // @desc    delete material from concept
 // @route   DELETE /api/v1/concepts/:conceptId/materials/:materialId
-// @access  private
+// @access  admin/private
 exports.deleteMaterial = asyncHandler(async (req, res, next) => {
   const conceptId = req.params.conceptId
   const materialId = req.params.materialId

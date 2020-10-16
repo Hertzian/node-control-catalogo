@@ -34,7 +34,7 @@ exports.getMaterial = asyncHandler(async (req, res, next) => {
 
 // @desc    new material
 // @route   POST /api/v1/materials
-// @access  private
+// @access  admin/private
 exports.addMaterial = asyncHandler(async(req, res, next) => {
   const material = await Material.create(req.body)
 
@@ -46,7 +46,7 @@ exports.addMaterial = asyncHandler(async(req, res, next) => {
 
 // @desc    update material
 // @route   PUT /api/v1/materials/:materialId
-// @access  private
+// @access  admin/private
 exports.updateMaterial = asyncHandler(async(req, res, next) => {
   const materialId = req.params.materialId
   let material = await Material.findOne({_id: materialId})
@@ -68,7 +68,7 @@ exports.updateMaterial = asyncHandler(async(req, res, next) => {
 
 // @desc    delete material
 // @route   DELETE /api/v1/materials/:materialId
-// @access  private
+// @access  admin/private
 exports.deleteMaterial = asyncHandler(async(req, res, next) => {
   const materialId = req.params.materialId
   const material = await Material.findById(materialId)

@@ -6,6 +6,7 @@ const router = express.Router()
 router.get('/', ConceptsController.getConcepts)
 router.get('/:conceptId', ConceptsController.getConceptById)
 router.get('/catalog/:catalogId', ConceptsController.getConceptsByCatalogId)
+// admin routes
 router.post('/', ConceptsController.newConcept)
 router.post('/:conceptId/materials', ConceptsController.addMaterial)
 router.delete('/:conceptId', ConceptsController.deleteConcept)

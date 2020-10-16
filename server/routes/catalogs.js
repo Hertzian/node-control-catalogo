@@ -5,11 +5,12 @@ const router = express.Router()
 // Routes
 router.get('/', CatalogController.getCatalogs)
 router.get('/:catalogId', CatalogController.getCatalog)
+// admin routes
 router.post('/', CatalogController.newCatalog)
-router.post('/:catalogId/add-concept', CatalogController.addConcept)
 router.put('/:catalogId', CatalogController.updateCatalog)
-router.delete('/:catalogId/concept/:conceptId', CatalogController.removeConcept)
+router.post('/:catalogId/add-concept', CatalogController.addConcept)
 router.delete('/:catalogId', CatalogController.removeCatalog)
+router.delete('/:catalogId/concept/:conceptId', CatalogController.removeConcept)
 
 
 module.exports = router
