@@ -1,7 +1,7 @@
 const path = require('path')
 const express = require('express')
 const dotenv = require('dotenv')
-dotenv.config({path: './config/config.env'})
+dotenv.config({path: './server/config/config.env'})
 const connectDB = require('./config/db')
 const errorHandler = require('./middleware/errorHandler')
 
